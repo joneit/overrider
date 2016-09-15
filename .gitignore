@@ -1,0 +1,6 @@
+.DS_Store
+/build/overrider.js
+/build/overrider.min.js
+/.idea
+/doc
+/node_modules

@@ -1,0 +1,28 @@
+{
+  "name": "overrider",
+  "version": "0.1.0",
+  "main": "index.js",
+  "description": "JavasScript shallow object copier that supports getters/setters",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joneit/overrider"
+  },
+  "scripts": {
+    "test": "gulp test"
+  },
+  "author": "Jonathan Eiten",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-eslint": "^1.1.0",
+    "gulp-exclude-gitignore": "^1.0.0",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-mocha": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-uglify": "^1.5.1",
+    "jsdoc": "^3.3.3",
+    "run-sequence": "^1.1.4",
+    "should": "^7.1.1"
+  }
+}
