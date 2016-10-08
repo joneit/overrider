@@ -30,7 +30,7 @@ var object = overrider(a, b, c); // result is `a` which now has an `a.b` and the
 
 ### Documentation
 
-Detailed documentation can be found [here](http://joneit.github.io/overrider/index.html).
+Detailed documentation can be found [here](https://joneit.github.io/overrider/global.html#overrider).
 
 ### Submodules
 

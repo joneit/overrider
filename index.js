@@ -1,26 +1,51 @@
 'use strict';
 
+/** @module overrider */
+
 /**
- * Mixes members of all `sources` into `object`, handling getters and setters properly.
+ * Mixes members of all `sources` into `target`, handling getters and setters properly.
  *
  * Any number of `sources` objects may be given and each is copied in turn.
  *
+ * @example
+ * var overrider = require('overrider');
+ * var target = { a: 1 }, source1 = { b: 2 }, source2 = { c: 3 };
+ * target === overrider(target, source1, source2); // true
+ * // target object now has a, b, and c; source objects untouched
+ *
  * @param {object} object - The target object to receive sources.
- * @param {...object} [sources] - Object(s) containing members to copy to `object`. (Omitting is a no-op.)
- * @returns {object} `object`
+ * @param {...object} [sources] - Object(s) containing members to copy to `target`. (Omitting is a no-op.)
+ * @returns {object} The target object (`target`)
  */
-function overrider(object, sources) { // eslint-disable-line no-unused-vars
+function overrider(target, sources) { // eslint-disable-line no-unused-vars
     for (var i = 1; i < arguments.length; ++i) {
-        mixInFrom.call(object, arguments[i]);
+        mixInFrom.call(target, arguments[i]);
     }
 
-    return object;
+    return target;
 }
 
 /**
  * Mix `this` members into `target`.
+ *
+ * @example
+ * // A. Simple usage (using .call):
+ * var mixInTo = require('overrider').mixInTo;
+ * var target = { a: 1 }, source = { b: 2 };
+ * target === overrider.mixInTo.call(source, target); // true
+ * // target object now has both a and b; source object untouched
+ *
+ * @example
+ * // B. Semantic usage (when the source hosts the method):
+ * var mixInTo = require('overrider').mixInTo;
+ * var target = { a: 1 }, source = { b: 2, mixInTo: mixInTo };
+ * target === source.mixInTo(target); // true
+ * // target object now has both a and b; source object untouched
+ *
+ * @this {object} Target.
  * @param target
- * @returns target
+ * @returns {object} The target object (`target`)
+ * @memberOf module:overrider
  */
 function mixInTo(target) {
     var descriptor;
@@ -34,8 +59,25 @@ function mixInTo(target) {
 
 /**
  * Mix `source` members into `this`.
+ *
+ * @example
+ * // A. Simple usage (using .call):
+ * var mixInFrom = require('overrider').mixInFrom;
+ * var target = { a: 1 }, source = { b: 2 };
+ * target === overrider.mixInFrom.call(target, source) // true
+ * // target object now has both a and b; source object untouched
+ *
+ * @example
+ * // B. Semantic usage (when the target hosts the method):
+ * var mixInFrom = require('overrider').mixInFrom;
+ * var target = { a: 1, mixInFrom: mixInFrom }, source = { b: 2 };
+ * target === target.mixInFrom(source) // true
+ * // target now has both a and b (and mixInFrom); source untouched
+ *
  * @param source
- * @returns this
+ * @returns {object} The target object (`this`)
+ * @memberOf overrider
+ * @memberOf module:overrider
  */
 function mixInFrom(source) {
     var descriptor;

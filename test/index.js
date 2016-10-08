@@ -7,43 +7,82 @@ require('should'); // extends Object with `should`
 var overrider = require('..');
 
 describe('`overrider.mixInFrom` that', function() {
-    var a, o, c, mixInFrom;
+    var source, target, c, mixInFrom;
     beforeEach(function() {
-        a = { f: 23 };
-        o = { e: 5 };
+        target = { f: 23 };
+        source = { e: 5 };
         c = {
-            a: 17,
-            get b() { return this.c; },
-            set b(x) { this.c = x; }
+            source: 17,
+            get b() { return this._b; },
+            set b(x) { this._b = x; }
         };
         mixInFrom = overrider.mixInFrom;
     });
-    it('is a function', function() {
+    it('is source function', function() {
         mixInFrom.should.be.a.Function();
     });
-    it('returns `this`', function() {
-        var r = mixInFrom.call(a, o);
-        r.should.equal(a);
+    it('returns context (`this`, the target object)', function() {
+        mixInFrom.call(target, source).should.equal(target);
     });
-    it('preserves existing properties', function() {
-        var r = mixInFrom.call(a, o);
-        a.f.should.equal(23);
+    it('preserves existing properties of context (`this`, the target object)', function() {
+        mixInFrom.call(target, source);
+        target.f.should.equal(23);
+    });
+    it('leaves first arg (the source object) alone', function() {
+        mixInFrom.call(target, source);
+        source.e.should.equal(5);
+        Object.keys(source).length.should.equal(1);
     });
     it('copies regular properties', function() {
-        var r = mixInFrom.call(a, o);
-        r.e.should.equal(5);
+        mixInFrom.call(target, source);
+        target.e.should.equal(5);
+        Object.keys(target).length.should.equal(2);
     });
     it('copies getters and setters that function as expected', function() {
-        var r = mixInFrom.call(a,c);
-        r.b = 99;
-        r.b.should.equal(99);
-        r.c.should.equal(99);
+        mixInFrom.call(target, c);
+        c.b = 99;
+        c.b.should.equal(99);
+        c._b.should.equal(99);
     });
 });
 
 describe('`overrider.mixInTo` that', function() {
-    it('is a function', function() {
+    var source, target, c, mixInTo;
+    beforeEach(function() {
+        target = { f: 23 };
+        source = { e: 5 };
+        c = {
+            source: 17,
+            get b() { return this._b; },
+            set b(x) { this._b = x; }
+        };
+        mixInTo = overrider.mixInTo;
+    });
+    it('is source function', function() {
         overrider.mixInTo.should.be.a.Function();
+    });
+    it('returns first arg (the target object)', function() {
+        mixInTo.call(source, target).should.equal(target);
+    });
+    it('preserves existing properties of first arg (the target object)', function() {
+        mixInTo.call(source, target);
+        target.f.should.equal(23);
+    });
+    it('leaves source object alone', function() {
+        mixInTo.call(source, target);
+        source.e.should.equal(5);
+        Object.keys(source).length.should.equal(1);
+    });
+    it('copies regular properties', function() {
+        mixInTo.call(source, target);
+        target.e.should.equal(5);
+        Object.keys(target).length.should.equal(2);
+    });
+    it('copies getters and setters that function as expected', function() {
+        mixInTo.call(source, c);
+        c.b = 99;
+        c.b.should.equal(99);
+        c._b.should.equal(99);
     });
 });
 
