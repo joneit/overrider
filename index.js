@@ -16,8 +16,7 @@ function overrider(object, overrides) {
         overrides = arguments[i];
         if (typeof overrides === 'object') {
             for (key in overrides) {
-                if (overrides.hasOwnProperty(key)) {
-                    descriptor = Object.getOwnPropertyDescriptor(overrides, key);
+                if ((descriptor = Object.getOwnPropertyDescriptor(overrides, key))) {
                     Object.defineProperty(object, key, descriptor);
                 }
             }
