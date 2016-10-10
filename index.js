@@ -19,7 +19,7 @@
  */
 function overrider(target, sources) { // eslint-disable-line no-unused-vars
     for (var i = 1; i < arguments.length; ++i) {
-        mixInFrom.call(target, arguments[i]);
+        mixIn.call(target, arguments[i]);
     }
 
     return target;
@@ -62,24 +62,24 @@ function mixInTo(target) {
  *
  * @example
  * // A. Simple usage (using .call):
- * var mixInFrom = require('overrider').mixInFrom;
+ * var mixIn = require('overrider').mixIn;
  * var target = { a: 1 }, source = { b: 2 };
- * target === overrider.mixInFrom.call(target, source) // true
+ * target === overrider.mixIn.call(target, source) // true
  * // target object now has both a and b; source object untouched
  *
  * @example
  * // B. Semantic usage (when the target hosts the method):
- * var mixInFrom = require('overrider').mixInFrom;
- * var target = { a: 1, mixInFrom: mixInFrom }, source = { b: 2 };
- * target === target.mixInFrom(source) // true
- * // target now has both a and b (and mixInFrom); source untouched
+ * var mixIn = require('overrider').mixIn;
+ * var target = { a: 1, mixIn: mixIn }, source = { b: 2 };
+ * target === target.mixIn(source) // true
+ * // target now has both a and b (and mixIn); source untouched
  *
  * @param source
  * @returns {object} The target object (`this`)
  * @memberOf overrider
  * @memberOf module:overrider
  */
-function mixInFrom(source) {
+function mixIn(source) {
     var descriptor;
     for (var key in source) {
         if ((descriptor = Object.getOwnPropertyDescriptor(source, key))) {
@@ -90,6 +90,6 @@ function mixInFrom(source) {
 }
 
 overrider.mixInTo = mixInTo;
-overrider.mixInFrom = mixInFrom;
+overrider.mixIn = mixIn;
 
 module.exports = overrider;

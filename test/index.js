@@ -6,8 +6,8 @@ require('should'); // extends Object with `should`
 
 var overrider = require('..');
 
-describe('`overrider.mixInFrom` that', function() {
-    var source, target, c, mixInFrom;
+describe('`overrider.mixIn` that', function() {
+    var source, target, c, mixIn;
     beforeEach(function() {
         target = { f: 23 };
         source = { e: 5 };
@@ -16,30 +16,30 @@ describe('`overrider.mixInFrom` that', function() {
             get b() { return this._b; },
             set b(x) { this._b = x; }
         };
-        mixInFrom = overrider.mixInFrom;
+        mixIn = overrider.mixIn;
     });
     it('is source function', function() {
-        mixInFrom.should.be.a.Function();
+        mixIn.should.be.a.Function();
     });
     it('returns context (`this`, the target object)', function() {
-        mixInFrom.call(target, source).should.equal(target);
+        mixIn.call(target, source).should.equal(target);
     });
     it('preserves existing properties of context (`this`, the target object)', function() {
-        mixInFrom.call(target, source);
+        mixIn.call(target, source);
         target.f.should.equal(23);
     });
     it('leaves first arg (the source object) alone', function() {
-        mixInFrom.call(target, source);
+        mixIn.call(target, source);
         source.e.should.equal(5);
         Object.keys(source).length.should.equal(1);
     });
     it('copies regular properties', function() {
-        mixInFrom.call(target, source);
+        mixIn.call(target, source);
         target.e.should.equal(5);
         Object.keys(target).length.should.equal(2);
     });
     it('copies getters and setters that function as expected', function() {
-        mixInFrom.call(target, c);
+        mixIn.call(target, c);
         c.b = 99;
         c.b.should.equal(99);
         c._b.should.equal(99);
@@ -96,7 +96,7 @@ describe('`overrider` that', function() {
     it('is a function', function() {
         overrider.should.be.a.Function();
     });
-    it('calls mixInFrom');
+    it('calls mixIn');
     it('returns first arg', function() {
         var r = overrider(a, o);
         r.should.equal(a);
